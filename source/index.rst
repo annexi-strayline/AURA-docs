@@ -32,6 +32,9 @@ There are two foundational differentiation that drove the conceptualization of A
 
    quick_start/prerequisites
    quick_start/installation
+   quick_start/setting_up_a_project
+   quick_start/using_an_aura_package
+
 
 
 AURA as a hypothetical Specialized Needs Annex
@@ -50,7 +53,7 @@ Therefore the attempt to compile an AURA "project" with a non-conformant compile
 Staying true to the Ada philosophy
 ----------------------------------
 The best thing is often impractical.
-The right thing is usually rejected. 
+The right thing is usually rejected.
 The popular thing is usually wrong.
 
 Package management is fraught with danger. Two poisons conspire: interdependency and versioning.
