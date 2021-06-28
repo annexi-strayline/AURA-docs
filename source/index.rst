@@ -4,6 +4,25 @@ AURA: Ada User Repository Annex
 .. meta::
    :description lang=en: AURA Reference Implementation Documentation
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Quick start
+
+   quick_start/prerequisites
+   quick_start/installation
+   quick_start/setting_up_a_project
+   quick_start/using_an_aura_package
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Concepts
+
+   concepts/subsystems
+   concepts/repositories
+   concepts/autoconfiguration
+
 The Ada User Repository Annex (AURA) is a proposed specification for a native Ada source code package management system.
 
 AURA is an experimental project to bring the equivalent of package management to Ada with an approach that feels as native as possible. Ada has a few unique properties that differentiate it from other modern languages.
@@ -18,22 +37,12 @@ Premise
 -------
 AURA was designed in the context of a conceptual new *Specialized Needs Annex* addendum to the Ada Reference Manual (the Ada standard). As such it is designed not as a "package manager", per-se, but as a defined behavior for the specification of a user-defined source-code repository that the compiler may natively support [#]_. 
    
-The basic idea is that when the compiler encounters "with" clauses for subsystems it cannot immediately locate, it attempts to retrieve them from the AURA repository.
+The basic idea is that when the compiler encounters "with" clauses for subsystems it cannot immediately locate, it attempts to retrieve them from the AURA repository. The AURA reference implementation program mimics this behaviour by scanning the with statements of all Ada sources.
 
 There are two foundational differentiation that drove the conceptualization of AURA:
 
 #. Ada has been built from the very beginning from a formal specification.
 #. Ada has a design emphasis on, and pedigree for, high integrity and safety-critical software
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Quick start
-
-   quick_start/prerequisites
-   quick_start/installation
-   quick_start/setting_up_a_project
-   quick_start/using_an_aura_package
 
 
 
@@ -49,6 +58,7 @@ AURA is designed to be optionally implemented by natively by any Ada compiler, w
 AURA achieves this by defining the behaviour of a compiler should it encounter the inclusion ("withing") of an unknown Ada subsystem. Recall that subsystem is any "top-level" library unit, and its children. For example, package Ada and package Interfaces are both language-defined subsystems. Additionally AURA supports the "withing" of non-Ada units via an annex-specific pragma ("pragma External_With").
 
 Therefore the attempt to compile an AURA "project" with a non-conformant compiler will simply result in the failure to find the withed units. In contrast, a compliant compiler will attempt to retrieve any missing subsystems via the configured repositories, as is explained in greater detail throughout this documentation.
+
 
 Staying true to the Ada philosophy
 ----------------------------------
@@ -66,7 +76,7 @@ To counter the higher administrative overhead of not having "native" versioning,
    
 
 
-.. [#] No actual new annex has yet 1been formally developed, or proposed to the `ARG <http://ada-auth.org>`_
+.. [#] No actual new annex has yet been formally developed, or proposed to the `ARG <http://ada-auth.org>`_
 
 
 

@@ -5,7 +5,7 @@ AURA projects themselves start simply as any subdirectory, optionally with the p
 
 .. seealso::
     
-    To learn more about what defines a project for this reference implementation, please see the :doc:`<../concepts/projects>` explainer.
+    To learn more about what defines a project for this reference implementation, please see the :doc:`</implementation/projects>` explainer.
 
 Let's make a quick directory
 
@@ -25,7 +25,7 @@ Open a file *hello.adb* in your favourite editor, and enter the following code:
 
 .. literalinclude:: snippets/hello.adb
     :language: ada
-    :linenos:
+    :caption: hello.adb
 
 Run it
 ------

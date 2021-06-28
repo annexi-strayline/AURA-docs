@@ -14,7 +14,8 @@ Let's modify **hello.adb** to use the CLI third-party subsystem package from ANN
 
 .. literalinclude:: snippets/hello.2.adb
     :language: ada
-    :linenos:
+    :emphasize-lines: 1,5
+    :caption: hello.adb
 
 If we run ``aura run hello`` now, the AURA CLI will complain that it cannot find the missing subsystem for "cli".
 
@@ -39,7 +40,6 @@ Lets create the repository for AURA by creating the **aura-repository_2.ads** pa
 
 .. literalinclude:: snippets/aura-repository_2.ads
     :language: ada
-    :linenos:
 
 Now lets re-run the aura cli:
 
