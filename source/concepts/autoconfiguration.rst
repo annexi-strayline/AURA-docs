@@ -66,3 +66,31 @@ Here is an example of the ASAP INET subsystem which provides full TLS support as
   :language: ada
   :caption: aura-inet.ads
 
+
+An AURA manifest package may contain any legal Ada declarations, and may also have a body. The only restriction is that an AURA manifest cannot have any dependencies except the Ada standard library, and my not be generic.
+
+There are three special nested packages that the AURA implementation recognizes and processes specially, and one recommended convention.
+
+The Configuration Nested Package
+--------------------------------
+
+.. literalinclude:: snippets/aura-inet.config-focus.ads
+  :language: ada
+
+The **configuration** nested package is not recognized by the AURA implementation, but is a recommended convention for the storage of all user-configurable options of an AURA subsystem.
+
+In this example, the **configuration** package contains the option for enabling TLS support for the INET subsystem. The manifest should contain the default configuration.
+
+If the user of the INET package wished to enable TLS support, they would edit the subsystem *configuration package* to enable that feature.
+
+By following this convention, the AURA subsystem users can more easily configure their checkouts of the subsystem.
+
+This package, if present, should declared as early as possible.
+
+The Build Nested Package
+------------------------
+
+.. literalinclude:: snippets/aura-inet.build-externlibs.ads
+  :language: ada
+
+
