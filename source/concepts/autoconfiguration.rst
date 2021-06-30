@@ -37,7 +37,7 @@ Each AURA subsystem can *optionally* include a special library unit called the *
   package CLI.AURA is
     ..
 
-If included, manifests are copied to the project root as-is (spec and body), except that they are renamed as direct children of the AURA package with the subsystem name. As with the root AURA package, any AURA subsystem can then with this unit to access the configuration properties.
+If included, manifests are copied to the project root as-is (spec and body), except that they are renamed as direct children of the AURA package with the subsystem name. As with the root AURA package, any AURA subsystem can then *with* this unit to access the configuration properties.
 
 In the example above, the CLI manifest would be converted into a unit in the project root that would be declared as follows:
 
@@ -49,13 +49,20 @@ In the example above, the CLI manifest would be converted into a unit in the pro
   package AURA.CLI is
     ..
 
-Manifest should contain sufficient comments to allow the user to make their own modifications to the configuration of the subsystem once "installed".
+Manifest should contain sufficient comments to allow the user to make their own modifications to the configuration of the subsystem once :doc:`checked-out <repositories>`.
 
 
 
 Subsystem Configuration
 -----------------------
 
-Once a subsystem manifest gets copied to the root project during the installation of an AURA subsystem, it becomes what is known as the *configuration package*. Configuration packages (while totally optional), are a powerful feature of the autoconfiguration process. 
+Once a subsystem manifest gets copied to the root project during the :doc:`checkout <repositories>` of an AURA subsystem, it becomes what is known as the **configuration package**. Configuration packages (while totally optional), are a powerful feature of the autoconfiguration process. 
 
-During the build process, each subsystem is *configured*, which involves parsing and evaluating 
+During the build process, each subsystem is *configured*, which involves parsing and evaluating each available subsystem configuration package, and using some of the explicitly defined components to influence the build environment with code paths, external libraries, compiler settings, and C language definitions.
+
+Here is an example of the ASAP INET subsystem which provides full TLS support as a binding to libressl's `libtls <https://www.libressl.org/>`_
+
+.. literalinclude:: snippets/aura-inet.ads
+  :language: ada
+  :caption: aura-inet.ads
+
