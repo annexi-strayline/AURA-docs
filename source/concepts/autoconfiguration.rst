@@ -1,12 +1,11 @@
 Autoconfiguration
 =================
 
-One common need for portable code "packages" is the configuration of various platform-dependent values.
+One common need for broadly distributed portable code "packages" is the configuration of various platform-dependent values.
 
 The design intent is for this kind of platform-specific configuration process to be as integrated as possible, and not simply pull from existing C/UNIX-oriented autoconfiguration systems like Autotools, Ninja/CMAKE, etc.
 
 To this end, all AURA auto-configuration happens among a special AURA-specific Ada subsystem which contains all AURA subsystem configuration, platform information, and repository configuration, within normal Ada packages.
-
 
 The AURA Subsystem
 ------------------
@@ -27,70 +26,13 @@ Any AURA subsystem can with the AURA root package to gain access to these values
 
 Of course there are limitations to how much of this configuration can be done from within Ada, particularly when including non-Ada sources. To handle these situations, AURA specifies a rich *autoconfiguration* mechanism that allows AURA subsystems to self-configure on build.
 
-Subsystem Manifests
--------------------
+User Configuration
+------------------
 
-Each AURA subsystem can *optionally* include a special library unit called the **AURA manifest**. This is an Ada package that is the first child of the subsystem itself, with a name of "AURA". For example, for a the CLI subsystem in our :doc:`quick start example </quick_start/using_an_aura_package>`, the **AURA manifest** would be declared like this:
+The principle mechanism that both enables subsystem autoconfiguration, as well as user configuration, is the :doc:`manifest <manifests>`.
 
-.. code-block:: ada
+Each subsystem has either an implicit or explicit manifest package that is instantiated in the project root as a child of the AURA package with the same name as the subsystem being checked-out. This package is a regular Ada package specification that presents any user-configurable parameters to the user, as well as giving access to the AURA root package containing the platform information.
 
-  package CLI.AURA is
-    ..
-
-If included, manifests are copied to the project root as-is (spec and body), except that they are renamed as direct children of the AURA package with the subsystem name. As with the root AURA package, any AURA subsystem can then *with* this unit to access the configuration properties.
-
-In the example above, the CLI manifest would be converted into a unit in the project root that would be declared as follows:
-
-.. note::
-  Since the AURA package is Pure, manifest packages must also be Pure. This is by design, and limits what manifest packages can do during autoconfiguration. This is both a safety/security feature, and encouragement to create AURA packages that build more efficiently and reliably.
-
-.. code-block:: ada
-
-  package AURA.CLI is
-    ..
-
-Manifest should contain sufficient comments to allow the user to make their own modifications to the configuration of the subsystem once :doc:`checked-out <repositories>`.
-
-
-
-Subsystem Configuration
------------------------
-
-Once a subsystem manifest gets copied to the root project during the :doc:`checkout <repositories>` of an AURA subsystem, it becomes what is known as the **configuration package**. Configuration packages (while totally optional), are a powerful feature of the autoconfiguration process. 
-
-During the build process, each subsystem is *configured*, which involves parsing and evaluating each available subsystem configuration package, and using some of the explicitly defined components to influence the build environment with code paths, external libraries, compiler settings, and C language definitions.
-
-Here is an example of the ASAP INET subsystem which provides full TLS support as a binding to libressl's `libtls <https://www.libressl.org/>`_
-
-.. literalinclude:: snippets/aura-inet.ads
-  :language: ada
-  :caption: aura-inet.ads
-
-
-An AURA manifest package may contain any legal Ada declarations, and may also have a body. The only restriction is that an AURA manifest cannot have any dependencies except the Ada standard library, and my not be generic.
-
-There are three special nested packages that the AURA implementation recognizes and processes specially, and one recommended convention.
-
-The Configuration Nested Package
---------------------------------
-
-.. literalinclude:: snippets/aura-inet.config-focus.ads
-  :language: ada
-
-The **configuration** nested package is not recognized by the AURA implementation, but is a recommended convention for the storage of all user-configurable options of an AURA subsystem.
-
-In this example, the **configuration** package contains the option for enabling TLS support for the INET subsystem. The manifest should contain the default configuration.
-
-If the user of the INET package wished to enable TLS support, they would edit the subsystem *configuration package* to enable that feature.
-
-By following this convention, the AURA subsystem users can more easily configure their checkouts of the subsystem.
-
-This package, if present, should declared as early as possible.
-
-The Build Nested Package
-------------------------
-
-.. literalinclude:: snippets/aura-inet.build-externlibs.ads
-  :language: ada
+This installed *manifest* is known as the *configuration package*, and is used to configure the subsystem during build. See the next section for more details on the structure, contents, and function of subsystem manifests.
 
 

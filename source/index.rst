@@ -22,6 +22,7 @@ AURA: Ada User Repository Annex
    concepts/subsystems
    concepts/repositories
    concepts/autoconfiguration
+   concepts/manifests
 
 The Ada User Repository Annex (AURA) is a proposed specification for a native Ada source code package management system.
 
