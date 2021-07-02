@@ -48,12 +48,10 @@ The ASAP INET subsystem provides a great example of a package manifest that cont
 Here is the complete INET manifest.
 
 .. note::
-  Remember that the manifest will become a configuration package with the name ``aura.inet`` after checkout. The actual manifest itself will never be directly compiled by AURA, a`nd cannot be withed directly by any unit of the subsystem.
+  Remember that the manifest will become a configuration package with the name ``aura.inet`` after checkout. The actual manifest itself will never be directly compiled by AURA, and cannot be withed directly by any unit of the subsystem.
 
 .. literalinclude:: snippets/aura-inet.ads
   :language: ada
-
-
 
 
 The Configuration Nested Package
@@ -62,11 +60,11 @@ The Configuration Nested Package
 .. literalinclude:: snippets/aura-inet.config-focus.ads
   :language: ada
 
-The **configuration** nested package is not recognized by the AURA implementation, but is a recommended convention for the storage of all user-configurable options of an AURA subsystem.
+The **Configuration** nested package is not recognized by the AURA implementation, but is a recommended convention for the storage of all user-configurable options of an AURA subsystem.
 
-In this example, the **configuration** package contains the option for enabling TLS support for the INET subsystem. The manifest should contain the default configuration.
+In this example, the **Configuration** package contains the option for enabling TLS support for the INET subsystem. The manifest should contain the default configuration.
 
-If the user of the INET package wished to enable TLS support, they would edit the subsystem *configuration package* to enable that feature.
+If the user of the INET package wished to enable TLS support, they would edit the subsystem **Configuration** package to enable that feature.
 
 By following this convention, the AURA subsystem users can more easily configure their checkouts of the subsystem.
 
@@ -77,3 +75,5 @@ The Build Nested Package
 
 .. literalinclude:: snippets/aura-inet.build-externlibs.ads
   :language: ada
+
+The **Build** nested package is used to control the build and linking of projects that depend on the subsystem, and itself contains
