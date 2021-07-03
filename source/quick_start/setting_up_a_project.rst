@@ -3,11 +3,7 @@ Setting up a Project
 
 AURA projects themselves start simply as any subdirectory, optionally with the project's core sourcecode.
 
-.. seealso::
-    
-    To learn more about what defines a project for this reference implementation, please see the :doc:`</implementation/projects>` explainer.
-
-Let's make a quick directory
+Let's start by making a quick directory
 
 .. prompt:: bash $
 
@@ -15,6 +11,11 @@ Let's make a quick directory
     cd hello_world
 
 This is really all it takes to create a new AURA project - just a subdirectory!
+
+.. seealso::
+    
+    To learn more about what defines a project for this reference implementation, please see the :doc:`projects </concepts/projects>` explainer.
+
 
 The classic Hello World
 -----------------------

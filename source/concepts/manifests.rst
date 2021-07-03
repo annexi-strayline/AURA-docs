@@ -76,4 +76,11 @@ The Build Nested Package
 .. literalinclude:: snippets/aura-inet.build-externlibs.ads
   :language: ada
 
-The **Build** nested package is used to control the build and linking of projects that depend on the subsystem, and itself contains
+The **Build** nested package is used to control the build and linking of projects that depend on the subsystem, and itself contains a number of specific AURA-recognized packages.
+
+The External_Libraries Package
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **External_Libraries** package can contain any number of constant String declarations which declare the 
+
+

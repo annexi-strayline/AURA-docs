@@ -19,6 +19,7 @@ AURA: Ada User Repository Annex
    :hidden:
    :caption: Concepts
 
+   concepts/projects
    concepts/subsystems
    concepts/repositories
    concepts/autoconfiguration
@@ -28,35 +29,54 @@ The Ada User Repository Annex (AURA) is a proposed specification for a native Ad
 
 AURA is an experimental project to bring the equivalent of package management to Ada with an approach that feels as native as possible. Ada has a few unique properties that differentiate it from other modern languages.
 
-This documentation primarily describes the ANNEXI-STRAYLINE reference implementation of the conceptual AURA "annex". This implementation and was used to both develop and prove the concept.
+This documentation primarily describes the `ANNEXI-STRAYLINE <https://annexi-strayline.com/>`_ reference implementation of AURA.
 
-The reference implementation described throughout this documentation is the `ANNEXI-STRAYLINE <https://annexi-strayline.com/>`_'s reference implementation of AURA, which also functions as a highly parallelized, integrated build system similar with similar capabilities of the native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm).
+The reference implementation described throughout this documentation is the _'s reference implementation of AURA, which also functions as a highly parallelized, integrated build system similar with similar capabilities of the native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm).
 
-The ANNEXI-STRAYLINE AURA implementation was developed to develop and prove the AURA concept, as well as provide a modern, user friendly general toolchain and package manager for Ada projects. Unlike the GPR suite, AURA attempts to be as easy as possible to obtain and learn, and is designed to be portable between any modern Ada compiler.
+The ANNEXI-STRAYLINE AURA implementation was developed to develop and prove the AURA concept, as well as provide a modern, user friendly general toolchain and package manager for Ada projects. Unlike the GPR suite, the AS reference implementation has the following design goals:
+
+* Fully parallelized
+* Designed for modern CI/CD pipelines
+* Permissively licensed (free as in free)
+* User friendly
+* Easy to learn
+
 
 Premise
 -------
-AURA was designed in the context of a conceptual new *Specialized Needs Annex* addendum to the Ada Reference Manual (the Ada standard). As such it is designed not as a "package manager", per-se, but as a defined behavior for the specification of a user-defined source-code repository that the compiler may natively support [#]_. 
-   
-The basic idea is that when the compiler encounters "with" clauses for subsystems it cannot immediately locate, it attempts to retrieve them from the AURA repository. The AURA reference implementation program mimics this behaviour by scanning the with statements of all Ada sources.
+AURA was designed in the context of a hypothetical new :ref:`Specialized Needs Annex <index_SNA_see_also>` of the Ada Reference Manual (the Ada standard). As such it is designed not as a "package manager", per-se, but as a defined behavior for the specification of a user-defined source-code repositories that the compiler may natively support [#not_an_sna]_. 
 
-There are two foundational differentiation that drove the conceptualization of AURA:
+AURA therefore is really the definition of the behavior a compliant Ada compiler should exhibit when encountering the *withing* of a *library unit* from an Ada :ref:`subsystem <index_subsystems_see_also>` that was not entered into the *library* through the normal mechanisms [#ARM_compilation]_.
+
+The basic idea is that when the compiler encounters *with* clauses (as well as AURA-specific *External_With* pragmas for subsystems it cannot immediately locate, it attempts to retrieve them from the AURA repository. The AURA reference implementation program mimics this behavior by scanning the with statements of all Ada sources.
+
+There are two foundational Ada differentiators that drove the conceptualization of AURA:
 
 #. Ada has been built from the very beginning from a formal specification.
 #. Ada has a design emphasis on, and pedigree for, high integrity and safety-critical software
 
+.. _index_SNA_see_also:
 
+.. seealso::
+   .. rubric:: `Ada Specialized Needs Annexes <http://www.ada-auth.org/standards/rm12_w_tc1/html/RM-1-1-2.html#I1007>`_
+
+   The `Ada Reference Manual <http://ada-auth.org/arm.html>`_ (ARM) is the ISO standardized formal specification for the Ada language, and formally defines how a compliant compiler is required to behave.
+
+   The ARM contains a set of *Specialized Need Annexes* that *"define features that are needed by certain application areas"*. 
+
+.. _index_subsystems_see_also:
+
+.. seealso::
+   .. rubric:: :doc:`Subsystems <concepts/subsystems>`
+
+   *Subsystems* are both Ada concepts, and (by extension) AURA concepts, as AURA is a conceptual *Specialized Needs Annex*. Subsystems are basically any *root* (top-level) library units and all of their children.
+
+   Subsystems retrieved and configured through AURA are essentially analogues to "packages" or "crates" of other package managers.
 
 AURA as a hypothetical Specialized Needs Annex
 ----------------------------------------------
 The Ada Reference Manual *Specialized Needs Annexes*
-   The `Ada Reference Manual <http://ada-auth.org/arm.html>` (ARM) is the ISO standardized formal specification for the Ada language, and formally defines how a compliant compiler is required to behave.
-
-   The ARM contains a set of *Specialized Need Annexes* that *"define features that are needed by certain application areas"*. Generally, these Annexes (currently C-H) specify additional optional functionality that a complier complier may (or may not) support.
-
-AURA is designed to be optionally implemented by natively by any Ada compiler, with defined behavior, and in a way that ensures that an AURA "project" is still a valid Ada program for compilers that do not implement the hypothetical AURA annex.
-
-AURA achieves this by defining the behaviour of a compiler should it encounter the inclusion ("withing") of an unknown Ada subsystem. Recall that subsystem is any "top-level" library unit, and its children. For example, package Ada and package Interfaces are both language-defined subsystems. Additionally AURA supports the "withing" of non-Ada units via an annex-specific pragma ("pragma External_With").
+   Generally, these Annexes (currently C-H) specify additional optional functionality that a complier complier may (or may not) support.
 
 Therefore the attempt to compile an AURA "project" with a non-conformant compiler will simply result in the failure to find the withed units. In contrast, a compliant compiler will attempt to retrieve any missing subsystems via the configured repositories, as is explained in greater detail throughout this documentation.
 
@@ -77,9 +97,9 @@ To counter the higher administrative overhead of not having "native" versioning,
    
 
 
-.. [#] No actual new annex has yet been formally developed, or proposed to the `ARG <http://ada-auth.org>`_
+.. [#not_an_sna] No actual new annex has yet been formally developed, or proposed to the `ARG <http://ada-auth.org>`_
 
-
+.. [#ARM_compilation] The Ada Reference Manual `clause 10 <http://www.ada-auth.org/standards/rm12_w_tc1/html/RM-10.html>`_ describes library units and compilation.
 
 
 

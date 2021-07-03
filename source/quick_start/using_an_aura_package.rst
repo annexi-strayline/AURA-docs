@@ -34,7 +34,7 @@ Repositories are defined by simple Ada package specifications. Repository 1 is a
 
 .. seealso::
 
-    To learn more about how AURA repositories work, and what is special about Repository 1, please see the :doc:`<../concepts/repositories>` explainer.
+    To learn more about how AURA repositories work, and what is special about Repository 1, please see the :doc:`repositories <../concepts/repositories>` explainer.
 
 Lets create the repository for AURA by creating the **aura-repository_2.ads** package spec:
 
