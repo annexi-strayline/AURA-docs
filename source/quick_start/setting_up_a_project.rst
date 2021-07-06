@@ -26,10 +26,8 @@ Open a file *hello.adb* in your favourite editor, and enter the following code:
 
 .. literalinclude:: snippets/hello.adb
     :language: ada
-    :caption: hello.adb
 
-Run it
-------
+.. rubric:: Run it
 
 .. prompt:: bash $
 
