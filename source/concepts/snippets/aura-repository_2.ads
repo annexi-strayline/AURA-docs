@@ -8,9 +8,10 @@
 
 package AURA.Repository_2 with Pure is
    
-   Format: constant Repository_Format := git;
-   Location: constant String := "https://github.com/annexi-strayline/ASAP";
-   Snapshot: constant String := "3e5f0781d900ed36cdfc8d8f2d61d71fd5d95122";
+   Format         : constant Repository_Format := git;
+   
+   Location       : constant String := "https://github.com/annexi-strayline/ASAP";
+   Snapshot       : constant String := "3e5f0781d900ed36cdfc8d8f2d61d71fd5d95122";
    Tracking_Branch: constant String := "tags/v0.21.1";
    
 end;

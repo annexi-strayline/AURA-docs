@@ -29,9 +29,9 @@ The Ada User Repository Annex (AURA) is a proposed specification for a native Ad
 
 AURA is an experimental project to bring the equivalent of package management to Ada with an approach that feels as native as possible. Ada has a few unique properties that differentiate it from other modern languages.
 
-This documentation primarily describes the `ANNEXI-STRAYLINE <https://annexi-strayline.com/>`_ reference implementation of AURA.
+This documentation primarily focused on the reference implementation of AURA, but also covers the core content of the future AURA specification.
 
-The reference implementation described throughout this documentation also functions as a highly parallelized, integrated build system with similar capabilities of the native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm). The AURA cli is further designed to enable modern CI/CD pipelines for Ada applications.
+The reference implementation of AURA also functions as a highly parallelized, integrated build system with similar capabilities of the native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm). The AURA cli is further designed to enable modern CI/CD pipelines for Ada applications.
 
 The AURA reference implementation was developed not only to prove the AURA specification, but also with a goal to provide a modern, open-source, freely-available, user friendly one-stop toolchain and package manager for Ada development. The AURA reference implementation prioritized the following design goals:
 
