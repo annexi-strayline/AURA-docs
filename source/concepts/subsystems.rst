@@ -1,7 +1,7 @@
 Subsystems
 ==========
 
-The Ada Reference Manual defines a *subsystem* as a *root* library unit together with all of its children. [#f1]_ A root library unit is essentially a library unit declared without a prefixed name (more specifically, a first child of package Standard). [#f2]_
+The Ada Reference Manual defines a *subsystem* as a *root* library unit together with all of its children [#f1]_. A root library unit is essentially a library unit declared without a prefixed name (more specifically, a first child of package Standard) [#f2]_.
 
 Ada was originally designed as a language for *programming in the large*, which is more than just being designed for the construction of very large programs, but also for the construction of large programs by a large number of people across concurrent teams (this happens to be an excellent property for open-source projects). Ada's powerful package paradigm is the foundational mechanism for enabling programming in the large.
 

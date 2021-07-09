@@ -24,7 +24,7 @@ Manifest should contain sufficient comments to allow the user to make their own 
 
 
 
-Manifest to Configuration
+Role in Autoconfiguration
 -------------------------
 
 Once a subsystem manifest gets copied to the root project during the :doc:`checkout <repositories>` of an AURA subsystem, it becomes what is known as the *configuration package*. Configuration packages are a powerful feature of the autoconfiguration process. 
@@ -36,19 +36,24 @@ Once a subsystem manifest gets copied to the root project during the :doc:`check
 
 During the build process, each subsystem is *:doc:`configured <autoconfiguration>`*, which involves parsing and evaluating each available subsystem configuration package, and using some of the explicitly defined components to influence the build environment with code paths, external libraries, compiler settings, and C language definitions.
 
-Example of a Manifest
----------------------
+Manifest Contents
+-----------------
 
 An AURA manifest package may contain any legal Ada declarations, and may also have a body. The only restriction is that an AURA manifest cannot have any dependencies except the Ada standard library, and my not be generic.
 
-There are three special nested packages that the AURA implementation recognizes and processes specially, and one recommended convention.
+There are three special nested packages that the AURA implementation recognizes and processes specially (``Build`` ``Codepaths`` ``Information``), and one recommended neutral nested package (``Configuration``).
+
+All of the specially recognized nested packages can contain any number of constant String declarations (often initialized with non-static expressions). These declarations are used by the AURA implementation to affect different capabilities, features, and configuration parameters for the subsystem and build environment.
+
+Example of a Manifest
+---------------------
 
 The ASAP INET subsystem provides a great example of a package manifest that contains both platform-based autoconfiguration, as well as user-configured options. The INET manifest also uses most of the important AURA-specific configuration facilities.
 
 Here is the complete INET manifest.
 
 .. note::
-  Remember that the manifest will become a configuration package with the name ``aura.inet`` after checkout. The actual manifest itself will never be directly compiled by AURA, and cannot be withed directly by any unit of the subsystem.
+  Remember that the manifest will become a configuration package with the name ``aura.inet`` after checkout. The actual manifest itself will never be directly compiled by AURA, and must not be withed directly by any unit of the subsystem.
 
 .. literalinclude:: snippets/aura-inet.ads
   :language: ada
@@ -60,15 +65,15 @@ The Configuration Nested Package
 .. literalinclude:: snippets/aura-inet.config-focus.ads
   :language: ada
 
-The **Configuration** nested package is not recognized by the AURA implementation, but is a recommended convention for the storage of all user-configurable options of an AURA subsystem.
+The ``Configuration`` nested package is a recommended convention, but is not specially recognized by the AURA implementation. It's recommended role is to contain all user-configurable options for the subsystem.
 
-In this example, the **Configuration** package contains the option for enabling TLS support for the INET subsystem. The manifest should contain the default configuration.
+In this example, the ``Configuration`` package contains the option for enabling TLS support for the ``INET`` subsystem. The manifest should contain the default configuration.
 
-If the user of the INET package wished to enable TLS support, they would edit the subsystem **Configuration** package to enable that feature.
+If the user of the INET package wished to enable TLS support, they would edit the subsystem ``Configuration`` package to enable that feature.
 
 By following this convention, the AURA subsystem users can more easily configure their checkouts of the subsystem.
 
-This package, if present, should declared as early as possible.
+This package, if present, should be the first declaration of the manifest.
 
 The Build Nested Package
 ------------------------
@@ -76,11 +81,23 @@ The Build Nested Package
 .. literalinclude:: snippets/aura-inet.build-externlibs.ads
   :language: ada
 
-The **Build** nested package is used to control the build and linking of projects that depend on the subsystem, and itself contains a number of specific AURA-recognized packages.
+The ``Build`` nested package is used to control the build and linking of projects that depend on the subsystem, and itself contains a number of specific AURA-recognized packages.
 
 The External_Libraries Package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The **External_Libraries** package can contain any number of constant String declarations which declare the 
+The ``Build.External_Libraries`` package can contain any number of constant String declarations which declare the linker/compiler-recognized library name. 
 
+.. note::
+  The AURA implementation is advised to generally follow the UNIX convention of using the library name, not including 'lib'. So, for example "iberty" for "libiberty", which for the uix ``cc`` and ``ld`` convention would imply a command line option of ``-Liberty``
+
+  The reference implementation follows this convention.
+
+  For an AURA subsystem that relies on libiberty, it should have a manifest with a declaration for ``Build.External_Libraries`` that contains a constant string with the value "iberty".
+
+The name of the constant String objects if ignored by the AURA implementation, but should typically be descriptive enough to maximize readability.
+
+Empty strings are ignored, which is useful when the requirement of an external library is conditional, depending on the configuration.
+
+Note in the above example that the value of ``LibreSSL_libtls`` is declared with a conditional expression that is based on the value of ``Configuration.Enable_TLS``. This is the recommended application of user configuration.
 

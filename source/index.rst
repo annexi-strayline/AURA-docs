@@ -90,9 +90,9 @@ As a conceptual *Specialized Needs Annex*, the behavior is well-defined for both
 Staying true to the Ada philosophy
 ----------------------------------
 
-The best thing is often impractical.
-The right thing is usually rejected.
-The popular thing is usually wrong.
+| The best thing is often impractical.
+| The right thing is usually rejected.
+| The popular thing is usually wrong.
 
 Package management is fraught with danger. Two poisons conspire: interdependency and versioning.
 
