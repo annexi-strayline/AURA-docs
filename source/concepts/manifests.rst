@@ -10,19 +10,20 @@ Each AURA subsystem can *optionally* include a special library unit called the *
 
 If included, manifests are copied to the project root as-is (spec and body), except that they are renamed as direct children of the AURA package with the subsystem name. As with the root AURA package, any AURA subsystem can then *with* this unit to access the configuration properties.
 
-In the example above, the CLI manifest would be converted into a unit in the project root that would be declared as follows:
-
 .. note::
-  Since the AURA package is Pure, manifest packages must also be Pure. This is by design, and limits what manifest packages can do during autoconfiguration. This is both a safety/security feature, and encouragement to create AURA packages that build more efficiently and reliably.
+  Manifests, as well as all special nested packages described in this documentation, are completely optional.
+
+In the example above, the CLI manifest would be converted into a unit in the project root that would be declared as follows:
 
 .. code-block:: ada
 
   package AURA.CLI is
     ..
 
-Manifest should contain sufficient comments to allow the user to make their own modifications to the configuration of the subsystem once :doc:`checked-out <repositories>`.
+Manifests should contain sufficient comments to allow the user to make their own modifications to the configuration of the subsystem once :doc:`checked-out <repositories>`.
 
-
+.. note::
+  Since the AURA package is Pure, manifest packages must also be Pure. This is by design, and limits what manifest packages can do during autoconfiguration. This is both a safety/security feature, and encouragement to create AURA packages that build more efficiently and reliably.
 
 Role in Autoconfiguration
 -------------------------
@@ -78,13 +79,17 @@ This package, if present, should be the first declaration of the manifest.
 The Build Nested Package
 ------------------------
 
-.. literalinclude:: snippets/aura-inet.build-externlibs.ads
-  :language: ada
+The ``Build`` nested package is used to control the building of subsystems, as well as the linking of projects that depend on the subsystem.
 
-The ``Build`` nested package is used to control the build and linking of projects that depend on the subsystem, and itself contains a number of specific AURA-recognized packages.
+The ``Build`` nested package is it composed of a a number of specific AURA-recognized packages.
+
+The ``Build`` nested package, as well as all of its nested children, is optional.
 
 The External_Libraries Package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: snippets/aura-inet.build-externlibs.ads
+  :language: ada
 
 The ``Build.External_Libraries`` package can contain any number of constant String declarations which declare the linker/compiler-recognized library name. 
 
@@ -99,5 +104,48 @@ The name of the constant String objects if ignored by the AURA implementation, b
 
 Empty strings are ignored, which is useful when the requirement of an external library is conditional, depending on the configuration.
 
-Note in the above example that the value of ``LibreSSL_libtls`` is declared with a conditional expression that is based on the value of ``Configuration.Enable_TLS``. This is the recommended application of user configuration.
+.. note::
+  In the above example that the value of ``LibreSSL_libtls`` is declared with a conditional expression that is based on the value of ``Configuration.Enable_TLS``. This is the recommended application of user configuration, using the ``Configuration`` package.
 
+The Ada Package
+^^^^^^^^^^^^^^^
+
+.. literalinclude:: snippets/aura-inet.build-ada.ads
+  :language: ada
+
+The ``Build.Ada`` package supplies subsystem-specific configuration for the building of Ada sources.
+
+Currently AURA only specifies a further nested package ``Compiler_Options``.
+
+.. _ada_compiler_options_description:
+
+The ``Compiler_Options`` nested package should contain a number of constant String declarations, where each one represents a specific option to pass to the Ada compiler.
+
+.. note::
+  In the above example, the GNAT-specific option ``-gnatwG`` is included. Notice how the object is given the descriptive name ``Ignore_Unknown_Pragmas``. This is included because the AURA specification includes a new ``pragma External_With`` used by AURA subsystems to include non-Ada units in their codebase.
+
+.. seealso::
+  See this section [Need Ref] for more discussion on the new ``pragma External_With``, and how to include non-Ada sources in an AURA subsystem.
+
+The C Package
+^^^^^^^^^^^^^
+
+.. literalinclude:: snippets/aura-inet.c.ads
+  :language: ada
+
+The ``Build.C`` package supplies subsystem-specific configuration for the building of C sources, and is a particularly powerful tool in the integration of C sources in AURA subsystems.
+
+Currently, AURA specifies two further nested packages: ``Compiler_Options`` and ``Preprocessor_Definitions``.
+
+``Build.C.Compiler_Options``
+  This functions identically as it does for ``Build.Ada.Compiler_Options``, as discussed :ref:`above <ada_compiler_options_description>`, except that it applies only to the C compiler.
+
+``Build.C.Preprocessor_Definitions``
+  This package is the most interesting and powerful tool for the integration of C sources.
+
+  Like most of the other nested packages, the ``Preprocessor_Definitions`` package should contain a series of constant String declarations. Each String causes the content of that string to be "defined" for any C sources in the subsystem's codepath [Ref Needed].
+
+  For example, if the ``INET`` AURA subsystem is built on MacOS, ``AURA.Platform_Flavor`` will have a value of "darwin", which will cause ``Build.C.Darwin`` to evaluate to "__INET_OS_DARWIN". This will cause all C sources that are part of the ``INET`` subsystem to be (in effect) compiled with ``#define __INET_OS_DARWIN``. 
+
+.. note::
+    If any of the constant String declarations of ``Build.C.Preprocessor_Definitions`` evaluate to a *null string*, AURA will ignore that declaration. Therefore (as in the above example), if a preprocessor definition should not be made in some cases, it should be set to a *null string*.

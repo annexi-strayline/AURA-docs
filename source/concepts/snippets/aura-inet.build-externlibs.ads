@@ -16,11 +16,11 @@ package aura.inet is
                   "");
          -- Users should also ensure that the libressl include directory is in
          -- C_INCLUDE_PATH, if not installed in the usual locations
-      end External_libraries;      
+      end External_libraries;
+      
+      -- ..
    end Build;
    
-   package Codepaths is
-      -- ...
-   end Codepaths;
+   -- ..
    
 end aura.inet;
