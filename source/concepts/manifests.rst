@@ -149,3 +149,24 @@ Currently, AURA specifies two further nested packages: ``Compiler_Options`` and 
 
 .. note::
     If any of the constant String declarations of ``Build.C.Preprocessor_Definitions`` evaluate to a *null string*, AURA will ignore that declaration. Therefore (as in the above example), if a preprocessor definition should not be made in some cases, it should be set to a *null string*.
+
+The Codepaths Nested Package
+----------------------------
+
+.. literalinclude:: snippets/aura-inet.codepaths.ads
+  :language: ada
+
+The ``Codepaths`` nested package is perhaps the most powerful single feature of AURA subsystem autoconfiguration. ``Codepaths`` allow the actual codebase to be selected through the autoconfiguration process. Among other things, this allows platform-specific code to be selected automatically for the target platform when the code is selected. In the above INET example, it is also used to include the additional TLS code when that option is enabled.
+
+While the ``Codebase`` mechanics are implementation-defined, the required behavior strongly hints at the typical implementation, and the recommended implementation is that of the reference implementation.
+
+The ``Codepaths`` package consists of any number of static String declarations. Each declaration that evaluates to a non-*null string* refers to some collection of library units, and/or other further collections. For the reference implementation, these declarations should evaluate to UNIX-style paths, without leading '/'. These paths should index subdirectories of the subsystem's own subdirectory.
+
+For the ``INET`` example, we see that if TLS is enabled (``Configuration.Enable_TLS = True``), the immediate source code of the ``tls`` subdirectory should be included.
+
+.. note::
+  Any subdirectories of a selected Codepath are **not** automatically included. These must be explicitly selected if they are to be included as well.
+
+Codepaths can be of any depth. In the ``INET`` example, we see that all platforms have a base ``ip_lookup`` codepath (subdirectory), which further contains ``addrinfo_posix`` and ``addrinfo_bsd``. These second-level subdirectories are selected base on the platform. It is important to note that the content of these second-level subdirectories would **not** be entered if not explicitly given as a codepath. That is to say, if only ``IP_Lookup_Base`` was declared, the contents of ``addrinfo_posix`` and ``addrinfo_bsd`` would **not** be included.
+
+The ``Codepaths`` mechanisms, when combined with the autoconfiguration mechanics, and the ability of a subsystem to *with* its own configuration package, provides the full compliment of capabilities to the Ada environment that can be achieved with *autotools* and C preprocessor definitions in the traditional UNIX development workflow. Generally speaking, the configuration package itself can be used to control static conditionals in the Ada codebase, and ``Codepaths`` can be used to select from implementation specific implementations (such as alternate unit bodies or subunits).
