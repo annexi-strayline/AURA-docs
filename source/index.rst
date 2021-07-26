@@ -25,6 +25,15 @@ AURA: Ada User Repository Annex
    concepts/autoconfiguration
    concepts/manifests
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: AURA CLI
+
+   cli/overview
+   cli/help_command
+   cli/clean_command
+
 The Ada User Repository Annex (AURA) is a proposed specification for a native Ada source code package management system, developed along-side a reference implementation.
 
 AURA is an experimental project to bring the equivalent of package management to Ada with an approach that feels as native as possible. Ada has a few unique properties that differentiate it from other modern languages.
