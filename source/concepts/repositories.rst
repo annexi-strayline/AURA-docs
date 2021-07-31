@@ -3,9 +3,6 @@ Repositories
 
 Repositories are simply a store of any number of :doc:`subsystems <subsystems>`. Repositories can be of any implementation-defined number of types, with only one type being required (the :ref:`local <local_repository_defn>` type). Declared repositories either shall specify an immutable snapshot of some kind, or else the implementation must compute a snapshot hash of the repository's contents at the first moment a subsystem is *checked-out* from the repository.
 
-
-.. _concepts_repositories_checkout:
-
 Repository Types
 ----------------
 
@@ -69,6 +66,8 @@ Repository_1
   The reference implementation does not yet support the direct management of user-declared repositories from the cli, though this is a planned feature. 
   
   In the mean-time, repositories are fairly easy to declare as seen in :ref:`Repository Declarations <ref_repository_declarations>`. :ref:`Here <git_repository_example>` is a great example of a typical git repository declaration. 
+
+.. _concepts_repositories_checkout:
 
 Checkout
 --------

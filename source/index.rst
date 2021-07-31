@@ -33,6 +33,7 @@ AURA: Ada User Repository Annex
    cli/overview
    cli/help_command
    cli/clean_command
+   cli/checkout_command
 
 The Ada User Repository Annex (AURA) is a proposed specification for a native Ada source code package management system, developed along-side a reference implementation.
 
