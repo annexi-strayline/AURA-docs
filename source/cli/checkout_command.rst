@@ -1,5 +1,5 @@
-Checkout
-========
+*Checkout*
+==========
 
 Usage
 -----
