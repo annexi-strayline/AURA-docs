@@ -16,6 +16,8 @@ The ``compile`` command compiles all object code for all units within the projec
 .. note::
   ``Compile`` does **not** invoke the binder, nor does it link the final executable.
 
+.. _ref_compile_command_options:
+
 Options
 ~~~~~~~
 

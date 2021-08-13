@@ -27,15 +27,13 @@ AURA checks to see if it is connected to a terminal, and when it is not, it will
 Command Summary
 ---------------
 
-=============================   ===========================================================
-Command                         Description
-=============================   ===========================================================
-:doc:`help <help_command>`      Output a summary of all commands and their options.
-:doc:`clean <clean_command>`    Cleans all compilation products from previous runs, and
-                                also removes any stored state created by AURA itself.
-=============================   ===========================================================
-
-
-* :doc:`help <help_command>`: Output a summary of all commands and their options.
-
-* :doc:`clean <clean_command>`: Cleans all compilation products from previous runs, and also removes any stored state created by AURA itself.
+====================================   ==========================================================================
+Command                                Description
+====================================   ==========================================================================
+:doc:`help <help_command>`             Output a summary of all commands and their options.
+:doc:`clean <clean_command>`           | Cleans all compilation products from previous runs, and also removes any
+                                       | stored state created by AURA itself.
+:doc:`checkout <checkout_command>`     Attemps to identify and check-out all requried subsystems.
+:doc:`compile <compile_command>`       Invokes checkout and then compiles all subsystems and project root units
+:doc:`build/run <build_run_command>`   Invokes compile and then links or executes an executable parition image.
+====================================   ==========================================================================
