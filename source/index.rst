@@ -42,29 +42,30 @@ The Ada User Repository Annex (AURA) is a proposed specification for a native Ad
 
 AURA is an experimental project to bring the equivalent of package management to Ada with an approach that feels as native as possible. Ada has a few unique properties that differentiate it from other modern languages.
 
-This documentation primarily focused on the reference implementation of AURA, but also covers the core content of the future AURA specification.
+This documentation primarily focused on the reference implementation of AURA, but also covers the core concepts of the (currently hypothetical) AURA specification.
 
-The reference implementation of AURA also functions as a highly parallelized, integrated build system with similar capabilities of the native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm). The AURA cli is further designed to enable modern CI/CD pipelines for Ada applications.
+The reference implementation of AURA also functions as a highly parallelized, integrated build system with similar capabilities of the native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm). The AURA reference implementation (AURA cli) is further designed to support modern CI/CD pipelines for Ada applications.
 
-The AURA reference implementation was developed not only to prove the AURA specification, but also with a goal to provide a modern, open-source, freely-available, user friendly one-stop toolchain and package manager for Ada development. The AURA reference implementation prioritized the following design goals:
+The AURA reference implementation was developed not only to prove the conceptual AURA specification, but also with a goal to provide a modern, open-source, freely-available, user friendly one-stop toolchain and package manager for Ada development. The AURA reference implementation prioritized the following design features:
 
-* Deeply parallelized
-* CI/CD orientated
-* Free for any use
-* Fully decentralized
+
+* Low barrier to entry
 * Easy to use
 * Easy to learn
-* Low barrier to entry
+* Free for any use
+* Fully decentralized (no authoritative repository)
+* Fully parallelized
+* CI/CD orientated
 
 
 Premise
 -------
 
-AURA was designed in the context of a hypothetical new :ref:`Specialized Needs Annex <index_SNA_see_also>` of the Ada Reference Manual (the Ada standard). As such it is not designed explicitly as a "package manager", per-se, but rather as a defined behavior for the specification of a user-defined, generalized, auto-configuring source code repositories that the compiler may natively support [#not_an_sna]_. 
+AURA was designed in the context of a hypothetical new :ref:`Specialized Needs Annex <index_SNA_see_also>` of the Ada Reference Manual (the Ada standard). As such it is not designed explicitly as a "package manager", per-se, but rather as a defined behavior for the specification of a user-defined, generalized, auto-configuring source code repositories that an Ada compiler could natively support [#not_an_sna]_. 
 
-AURA therefore is really the definition of the behavior a compliant Ada compiler should exhibit when encountering the *withing* of a *library unit* from an Ada :ref:`subsystem <index_subsystems_see_also>` that was not entered into the *library* through the normal mechanisms [#ARM_compilation]_.
+AURA is really the definition of the behavior a compliant Ada compiler should exhibit when encountering the *withing* of a *library unit* from an Ada :ref:`subsystem <index_subsystems_see_also>` that was not entered into the *library* through the normal mechanisms [#ARM_compilation]_.
 
-The basic idea is that when the compiler encounters *with* clauses (as well as AURA-specific *External_With* pragmas for subsystems it cannot immediately locate, it attempts to retrieve them from the AURA repository. The AURA reference implementation program mimics this behavior by scanning the with statements of all Ada sources.
+The basic idea is that when the compiler encounters *with* clauses (as well as AURA-specific *External_With* pragmas) for subsystems it cannot immediately locate, it attempts to retrieve them from the AURA repository. The AURA reference implementation program mimics this behavior by scanning the with statements of all Ada sources.
 
 There are two foundational Ada differentiators that drove the conceptualization of AURA:
 
