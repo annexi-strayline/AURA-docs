@@ -1,17 +1,15 @@
 Dependencies
 ============
 
-For any given :doc:`project <projects>`, all units and subsystems are scanned for their dependencies, which is used to build a dependency map. Dependencies that are not available cause an attempt to :ref:`checkout <concepts_repositories_checkout>` 
+For any given :doc:`project <projects>`, all Ada units are scanned for their dependencies, including units within :ref:`checked-out <concepts_repositories_checkout>` AURA subsystems. which is used to build a dependency map. Dependencies that are not available cause an attempt to :ref:`checkout <concepts_repositories_checkout>` the missing subsystem from any available repository.
 
-When the AURA cli program is run, the first step it takes is to "enter" all recognized program units in the *current directory* (the root directory of the :doc:`project <projects>`. Currently the reference implementation recognizes ``.ads``, ``.adb``, and ``.c`` files. These units are added to a global dependency map. Ada sources are then parsed for their dependencies. These dependencies are essentially Ada 'with' statements, and the AURA-specific 'External_With' pragma. 
+For the reference implementation, this is achieved iteratively. First all root units (in the root of the project subdirectory) are scanned. Any missing units cause an attempt to :ref:`check-out <concepts_repositories_checkout>` the subsystem to which that unit would belong. If that checkout succeeds, all units within the (:doc:`configured ` <autoconfiguration>) subsystem are then scanned. This process repeats until either all units become available, or else a required subsystem fails to be :ref:`checked-out <concepts_repositories_checkout>`.
 
-The Ada Reference Manual defines a *subsystem* as a *root* library unit together with all of its children [#f1]_. A root library unit is essentially a library unit declared without a prefixed name (more specifically, a first child of package Standard) [#f2]_.
+Including Non-Ada Sources
+-------------------------
 
-Ada was originally designed as a language for *programming in the large*, which is more than just being designed for the construction of very large programs, but also for the construction of large programs by a large number of people across concurrent teams (this happens to be an excellent property for open-source projects). Ada's powerful package paradigm is the foundational mechanism for enabling programming in the large.
+For the most part, dependencies are given through normal Ada `context clauses <http://ada-auth.org/standards/rm12_w_tc1/html/RM-10-1-2.html>`_ (``with`` clauses).
 
-Subsystems in AURA are semantically subset to Ada subsystem since AURA is defined in the context of the Ada standard. An Ada subsystem becomes an AURA subsystem by either being accessible from an AURA repository, or containing an :doc:`AURA subsystem manifest <manifests>`. AURA Subsystems are the functional analogues to "packages" or "crates" in package management systems. 
+AURA, like Ada itself, is standardized specifically to operate in a mixed-language environment.
 
-An AURA-compliant implementation will always attempt to resolve all dependencies of a program (project) by :ref:`checking-out <concepts_repositories_checkout>` any missing subsystems needed by a program from configured repositories. For subsystems installed and configured from a repository, the AURA implementation also iteratively attempts to :ref:`checkout <concepts_repositories_checkout>` all missing subsystems depended-upon by any checked-out subsystems.
-
-.. [#f1] `Ada Reference Manual, 10.1-3 <http://ada-auth.org/standards/rm12_w_tc1/html/RM-10-1.html>`_, defines a *subsystem*.
-.. [#f2] `Ada Reference Manual, 10.1.1-10 <http://ada-auth.org/standards/rm12_w_tc1/html/RM-10-1-1.html>`_ - defines a *root* library unit.
+AURA provides a mechanism for an Ada source to specify that some non-Ada unit is a dependency of that unit. To achieve this, 
