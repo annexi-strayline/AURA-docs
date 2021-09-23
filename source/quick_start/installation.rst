@@ -8,28 +8,32 @@ The AURA reference implementation CLI program is a single executable, and may be
 Config and Build
 ----------------
 
-The AURA CLI program itself is dependent on ANNEXI-STRAYLINE's 'ASAP' AURA repository. Due to the design of AURA, bootstrapping the AURA reference implementation is very simple, and is handled with git submodules and a very simple build script.
+The AURA CLI program itself is dependent on ANNEXI-STRAYLINE's 'ASAP' AURA repository, however these required components are included in the AURA CLI repository as submodules.
 
-Clone the repo and checkout submodules
+1. Clone the repo and checkout submodules
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. prompt:: bash $
 
-    git clone --recurse-submodules https://github.com/annexi-strayline/tf1.git
+    git clone --recurse-submodules https://github.com/annexi-strayline/aura.git
 
-Build it
+2. Build it
+^^^^^^^^^^^
 
 .. prompt:: bash $
 
     cd AURA
-    ./build.sh [--target=*target triplet*]
+    ./build.sh
 
 The build script executes two steps:
 
 #. Runs a configuration Python script (platform_config.py) which generates the base AURA target platform configuration base files *platform_info.h* and *platform_info.ads*. These base files are used to configure AURA according to the target.
 #. Executes gnatmake -j0 to build the AURA binary in parallel
 
+.. note::
+    Additional features are planned to give the user the ability to set the target triplet to build the AURA CLI for cross-compilation targets.
+
 Install
 -------
 
 Place the resulting *aura* executable where appropriate, typically somewhere under PATH$.
-

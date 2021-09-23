@@ -39,7 +39,7 @@ Options
   This option causes the final executable image to be fully statically linked.
 
   .. note::
-    When using this option, any requred libraries must be located within the path(s) specified by the LIBRARY_PATH environment variable, or otherwise can be placed in the ``aura-build`` subdirectory. of the AURA project. Note that ``aura-build`` is deleted if the ``clean`` command is invoked.
+    When using this option, any required libraries must be located within the path(s) specified by the LIBRARY_PATH environment variable, or otherwise can be placed in the ``aura-build`` subdirectory. of the AURA project. Note that ``aura-build`` is deleted if the ``clean`` command is invoked.
 
   .. note::
     If *-no-pie* is *not* specified, the resulting executable will still be a Position Independent executable, but will not be linked to any shared libraries.

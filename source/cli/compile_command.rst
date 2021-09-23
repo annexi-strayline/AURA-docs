@@ -43,4 +43,4 @@ Options
 Tips
 ----
 
-``Compile`` is particularly useful during the typical phase of Ada development when the compiler finding all of your thousands mistakes. The AURA CLI provides clearly formatted output from the units that failed to compile. The intelligent recompilation feature together with the highly parallelized design of the AURA reference implementation, this can be much quicker than more traditional approaches. When needing to attempt a compile many dozens of times, this can make a big difference.
+``Compile`` is particularly useful during the typical phase of Ada development when the compiler finding all of your thousands of mistakes. The AURA CLI provides clearly formatted output from the units that failed to compile. The intelligent recompilation feature together with the highly parallelized design of the AURA reference implementation, this can be much quicker than more traditional approaches. When needing to re-attempt a compilation many dozens of times, this can make a big difference.

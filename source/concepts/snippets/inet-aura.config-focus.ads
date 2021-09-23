@@ -1,10 +1,10 @@
 
 -- INET AURA Configuration Manifest
 
-package aura.inet is
+package INET.AURA is
    
    package Configuration is
-      Enable_TLS: constant Boolean := True;
+      Enable_TLS: constant Boolean := False;
    end Configuration;
    
    package Build is
@@ -19,4 +19,4 @@ package aura.inet is
       
    end Codepaths;
    
-end aura.inet;
+end INET.AURA;

@@ -1,5 +1,5 @@
 
-package aura.inet is
+package INET.AURA is
    
    -- ..
    
@@ -29,4 +29,4 @@ package aura.inet is
    
    -- ..
    
-end aura.inet;
+end INET.AURA;

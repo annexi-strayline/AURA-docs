@@ -39,6 +39,6 @@ Which should produce an output like this:
     :target: /_static/images/quick_start/runhello1.png
     :align: center
 
-The first time we run the AURA CLI , it will initialize the project with the AURA-specific files, if missing. This includes the AURA root package (aura.ads), as well as the auto-generated local Respository_1 repository configuration package (aura-repository_1.ads), and will then attempt to "checkout" all required subsystems from the configured repositories.
+The first time we run the AURA CLI , it will initialize the project with the AURA-specific files, if missing. This includes the AURA root package (aura.ads), as well as the auto-generated local Respository_1 repository configuration package (aura-repository_1.ads), and will then attempt to :ref:`"checkout" <concepts_repositories_checkout>` all required subsystems from the configured repositories.
 
 In this example, since we are relying only on the Ada standard library, there are no other dependencies, and aura is able to build the program without the need for any repositories.

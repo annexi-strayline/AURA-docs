@@ -21,4 +21,4 @@ If no subsystems are specified, then the project dependency graph is generated, 
 Tips
 ----
 
-``checkout`` with a specific target is helpful for explicitly obtaining an AURA subsystem before it has any dependencies in the project. Since Ada is so well structured package specifications are often the only documentation required to use an AURA subsystem in a project. Using checkout this way allows you to obtain the specifications first, to use as documentation for the inclusion of those subsystems in your project.
+``checkout`` with a specific target is helpful for explicitly obtaining an AURA subsystem before it has any dependencies in the project. Since Ada is so well structured, package specifications are often the only documentation required to use an AURA subsystem in a project. Using checkout this way allows you to obtain the specifications first, to use as documentation for the inclusion of those subsystems in your project.

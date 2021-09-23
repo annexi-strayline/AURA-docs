@@ -1,7 +1,7 @@
 
 -- INET AURA Configuration Manifest
 
-package aura.inet is
+package INET.AURA is
    
    package Configuration is
       -- ..
@@ -23,4 +23,4 @@ package aura.inet is
    
    -- ..
    
-end aura.inet;
+end INET.AURA;

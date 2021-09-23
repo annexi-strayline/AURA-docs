@@ -19,7 +19,7 @@
 
 project = 'Ada User Repository Annex'
 copyright = '2021, ANNEXI-STRAYLINE'
-author = 'ANNEXI-STRAYLINE'
+author = 'Richard Wai'
 
 
 # -- General configuration ---------------------------------------------------

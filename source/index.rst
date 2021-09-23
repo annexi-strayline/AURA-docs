@@ -21,6 +21,7 @@ AURA: Ada User Repository Annex
 
    concepts/projects
    concepts/subsystems
+   concepts/dependencies
    concepts/repositories
    concepts/autoconfiguration
    concepts/manifests
@@ -37,40 +38,22 @@ AURA: Ada User Repository Annex
    cli/compile_command
    cli/build_run_command
    cli/library_command
+   cli/systemize_command
 
-The Ada User Repository Annex (AURA) is a proposed specification for a native Ada source code package management system, developed along-side a reference implementation.
+The Ada User Repository Annex (AURA) is a proposed specification for a native Ada source code package management system, developed in lock-step with a reference implementation. This is the official documentation for the Reference Implementation (AURA CLI).
 
-AURA is an experimental project to bring the equivalent of package management to Ada with an approach that feels as native as possible. Ada has a few unique properties that differentiate it from other modern languages.
+AURA CLI was designed to function as a production-ready, integrated build system with similar capabilities to existing native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm). 
 
-This documentation primarily focused on the reference implementation of AURA, but also covers the core concepts of the (currently hypothetical) AURA specification.
-
-The reference implementation of AURA also functions as a highly parallelized, integrated build system with similar capabilities of the native packaging systems for projects like `Rust <https://www.rust-lang.org/>`_ (cargo), `Python <https://python.org/>`_ (pip), and `NodeJS <https://nodejs.org/>`_ (npm). The AURA reference implementation (AURA cli) is further designed to support modern CI/CD pipelines for Ada applications.
-
-The AURA reference implementation was developed not only to prove the conceptual AURA specification, but also with a goal to provide a modern, open-source, freely-available, user friendly one-stop toolchain and package manager for Ada development. The AURA reference implementation prioritized the following design features:
-
-
-* Low barrier to entry
-* Easy to use
-* Easy to learn
-* Free for any use
-* Fully decentralized (no authoritative repository)
-* Fully parallelized
-* CI/CD orientated
-
+AURA CLI has a fully parallelized design for maximum performance on modern systems, and uses all available cores to parse program text, compute dependencies, obtain subsystems, perform configuration, and build projects. Besides having a user-friendly interface, AURA CLI is also designed to work in automated CI/CD pipelines.
 
 Premise
 -------
 
-AURA was designed in the context of a hypothetical new :ref:`Specialized Needs Annex <index_SNA_see_also>` of the Ada Reference Manual (the Ada standard). As such it is not designed explicitly as a "package manager", per-se, but rather as a defined behavior for the specification of a user-defined, generalized, auto-configuring source code repositories that an Ada compiler could natively support [#not_an_sna]_. 
+AURA was designed as a hypothetical new :ref:`Specialized Needs Annex <index_SNA_see_also>` of the Ada Reference Manual (the Ada standard). As such it is not designed to be an exclusively stand-alone tool, but rather as a specific set of behaviors that an Ada compiler could optionally implement [#not_an_sna]_. The behavior specified by AURA is triggered when the implementation encounters a dependency that it cannot immediately locate. Dependencies are typically specified through standard Ada `with clauses <http://ada-auth.org/standards/rm12_w_tc1/html/RM-10-1-2.html>`_, though AURA also specifies a new :ref:`pragma <concepts_dependencies_external_with>` for the expression of non-Ada dependencies.
 
-AURA is really the definition of the behavior a compliant Ada compiler should exhibit when encountering the *withing* of a *library unit* from an Ada :ref:`subsystem <index_subsystems_see_also>` that was not entered into the *library* through the normal mechanisms [#ARM_compilation]_.
+The basic idea is that when an AURA implementation encounters a *with clause* for a library unit of a subsystem it cannot immediately locate, it attempts to retrieve that subsystem from the first available (configured) AURA repository. The AURA reference implementation ("AURA CLI") parses the `context clause <http://ada-auth.org/standards/rm12_w_tc1/html/RM-10-1-2.html>`_ of all Ada sources in a :doc:`project <concepts/projects>`. It then builds a fully dependency graph, and uses this information to compute which subsystems must be obtained, and if those subsystems actually contain the required units.
 
-The basic idea is that when the compiler encounters *with* clauses (as well as AURA-specific *External_With* pragmas) for subsystems it cannot immediately locate, it attempts to retrieve them from the AURA repository. The AURA reference implementation program mimics this behavior by scanning the with statements of all Ada sources.
-
-There are two foundational Ada differentiators that drove the conceptualization of AURA:
-
-#. Ada has been built from the very beginning from a formal specification.
-#. Ada has a design emphasis on, and pedigree for, high integrity and safety-critical software
+As a conceptual *Specialized Needs Annex*, the behavior is well-defined for both compliant and *non*-compliant compilers. Generally, the attempt to compile an AURA project with a non-compliant compiler may fail, but will never change the meaning of the program text, or the behavior of the compiled program.
 
 .. _index_SNA_see_also:
 
@@ -86,38 +69,26 @@ There are two foundational Ada differentiators that drove the conceptualization 
 .. seealso::
    .. rubric:: :doc:`Subsystems <concepts/subsystems>`
 
-   *Subsystems* are both Ada concepts, and (by extension) AURA concepts, as AURA is a conceptual *Specialized Needs Annex*. Subsystems are basically any *root* (top-level) library units and all of their children.
-
+   *Subsystems* are both Ada concepts, and (by extension) AURA concepts, as AURA is a conceptual *Specialized Needs Annex*. Subsystems are essentially any library unit hierarchies rooted by a "top-level" unit. Top-level means a direct child of ``package Standard``.
+   
    Subsystems retrieved and configured through AURA are essentially analogues to "packages" or "crates" of other package managers.
-
-AURA as a hypothetical Specialized Needs Annex
-----------------------------------------------
-
-The Ada Reference Manual *Specialized Needs Annexes*
-   Generally, these Annexes (currently C-H) specify additional optional functionality that a complier complier may (or may not) support.
-
-Therefore the attempt to compile an AURA "project" with a non-conformant compiler will simply result in the failure to find the withed units. In contrast, a compliant compiler will attempt to retrieve any missing subsystems via the configured repositories, as is explained in greater detail throughout this documentation.
-
-As a conceptual *Specialized Needs Annex*, the behavior is well-defined for both compliant and *non*-compliant compilers. Generally, the attempt to compile an AURA project with a non-compliant compiler will likely fail, but will never change the behavior of the compiled program in any case.
-
 
 Staying true to the Ada philosophy
 ----------------------------------
 
-| The best thing is often impractical.
-| The right thing is usually rejected.
-| The popular thing is usually wrong.
+| *The best thing is often impractical.*
+| *The right thing is usually rejected.*
+| *The popular thing is usually wrong.*
 
 Package management is fraught with danger. Two poisons conspire: interdependency and versioning.
 
-AURA takes a deliberate, and possibly controversial position that versioning is not the role of the package manager. Instead AURA expects versioning and version interdependency to be handled at the level of the repository or codebase. AURA simply seeks to ensure that any checked-out code never changes without explicit user intervention. The reference implementation integrates git, and encourages the use of submodules, branches, and tags, to handle versioning. Additionally, the generally open format of a repository in this reference implementation's style lends itself well to repository coalescing, where any user can fork a number of repositories from specific commits, into a single integrated repository - thereby specifying a specific "version" of all dependencies and interdependencies, in one location. This is the preferred way to maintain a project's AURA dependencies. The reference implementation "automatically" coalesces all repository dependencies in the sense that it records the source repository's commit (for git) or hash (for filesystem-based), and then makes local copies of the source data, stored in the project itself. More on this in the relevant sections.
+AURA takes a deliberate, and possibly controversial position that versioning should not be the responsibility of the package manager. Instead, AURA expects versioning and version interdependency to be handled at the level of the :doc:`repository <concepts/repositories>` and/or :doc:`subsystem <concepts/subsystems>`. This is done to ensure that AURA's behaviour is always predictable and that **checked-out code never changes without explicit user intervention**.
 
-The basic concept is that once a given AURA project compiles, none of the code should change unless explicitly changed. There will be no accidental breakages through naïve updating mechanisms, as is problematic with other package managers such as npm, pip, and cargo. Of course this comes at the disadvantage of requiring somewhat more maintenance effort. This trade-off seems to be consistent with Ada generally, where convenience is traded for greater safety and reliability.
+The reference implementation ("AURA CLI") prominently integrates `git <git-scm.com>`_, and encourages the use of submodules, branches, or tags to handle repository versioning. The simple subdirectory based :ref:`repository structure <local_repository_defn>` implemented by AURA CLI encourages repository coalescing, where individual subsystems are maintained in their own git repository, allowing coalesced AURA repositories to include them as git `submodules <https://git-scm.com/docs/gitsubmodules>`_, targeting specific commits of each subsystem. Such coalesced repositories can then be versioned as a collection, where integration testing can be applied to all submodules in the repository. Ideally, a project can create its own *single point of truth* repository to coalesce all project dependencies. This approach, though more work, makes updating of codebases much more reliable, safe, and controlled. 
 
-To counter the higher administrative overhead of not having "native" versioning, the definition, specification, and physical representation of a repository is kept as simple and regular as possible. The goal is that any user can not only quickly learn, but also quickly "grok" AURA in its entirety.
+Please see this `blog post <#>`_ for a deeper philosophical discussion on the design of AURA.
 
-
-.. [#not_an_sna] No actual new annex has yet been formally developed, or proposed to the `ARG <http://ada-auth.org>`_
+.. [#not_an_sna] As of yet we have not started any formal proposal to the `ARG <http://ada-auth.org>`_
 
 .. [#ARM_compilation] The Ada Reference Manual `clause 10 <http://www.ada-auth.org/standards/rm12_w_tc1/html/RM-10.html>`_ describes library units and compilation.
 

@@ -12,6 +12,8 @@ The ``clean`` command takes no arguments.
 
 ``clean`` removes all *intermediate* compilation products from the project, and also removes any AURA-specific saved-state (such as compilation state, code hashes, and dependency graphs).
 
+``clean`` does not remove any user configuration. Specifically, ``clean`` will never modify any unit of the AURA subsystem.
+
 .. note::
   *Intermediate compilation products* does **not** include the final linked programs, which will remain in the project root.
 
