@@ -1,1 +1,1 @@
-This is the official documentation for the AURA project, hosted on [readthedocs](#)
+This is the official documentation for the AURA project, hosted on [readthedocs](https://aura-docs.readthedocs.io/en/latest)
