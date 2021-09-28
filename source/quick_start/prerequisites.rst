@@ -22,6 +22,17 @@ Pre-built Binary GCC Builds
 
     A list of prebuilt FSF GCC Ada compiler packages can be found `here <https://github.com/annexi-strayline/gnat-packs>`_.
 
+.. warning::
+    AURA by default builds an executable that is dynamically linked to the Ada runtime. It is therefore crucial that the Ada runtime shared libraries are available, typically though ``$LD_LIBRARY_PATH`` and/or ``$LD_RUN_PATH`` (Linux/UNIX).
+
+    For GCC, this path is as follows: ``(gcc installation prefix)/lib/gcc/(target triplet)/(gcc version)/adalib``.
+
+    If using ANNEXI-STRAYLINE's pre-built packages for GNAT-10.3.0 on Linux (x86_64), you should be adding the following path to ``$LD_LIBRARY_PATH`` and/or ``$LD_RUN_PATH``: ``/opt/gcc-fsf-gnat/lib/gcc/x86_64-pc-linux-gnu/10.3.0/adalib``
+
+    Note that unlike ``$LD_LIBRARY_PATH``, ``$LD_RUN_PATH`` typically causes the shared library path to be hard-coded into the executable.
+
+    The AURA CLI options ``-static`` or ``-static-rt`` can be used to statically link the Ada runtime. See the :doc:`build/run command </cli/build_run_command>` for details.
+
 Python
 ------
 
